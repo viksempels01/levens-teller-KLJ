@@ -2,215 +2,242 @@
 <html lang="nl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dieren Levens Teller</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Dieren Teller</title>
 
 <style>
-body{
-    font-family: Arial, sans-serif;
-    background:#f4f4f4;
-    margin:0;
-    padding:20px;
-    text-align:center;
+*{
+    box-sizing:border-box;
+    -webkit-tap-highlight-color: transparent;
 }
 
-h1{
-    margin-bottom:25px;
+html, body{
+    margin:0;
+    padding:0;
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    font-family:Arial, sans-serif;
+    touch-action:manipulation;
+}
+
+body{
+    background:#111;
+    display:flex;
+    flex-direction:column;
 }
 
 .grid{
+    flex:1;
     display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-    gap:20px;
-    max-width:900px;
-    margin:auto;
-}
-
-.card{
-    background:white;
-    border-radius:15px;
-    padding:20px;
-    box-shadow:0 2px 10px rgba(0,0,0,0.1);
+    grid-template-columns:1fr 1fr;
+    grid-template-rows:1fr 1fr;
+    gap:6px;
+    padding:6px;
 }
 
 .team{
-    font-size:28px;
-    margin-bottom:15px;
+    border:none;
+    border-radius:18px;
+    color:white;
     font-weight:bold;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    font-size:8vw;
+    user-select:none;
+}
+
+.team:active{
+    transform:scale(0.98);
 }
 
 .counter{
-    font-size:60px;
-    font-weight:bold;
-    margin:15px 0;
-}
-
-button{
-    border:none;
-    border-radius:12px;
-    padding:15px;
-    font-size:20px;
-    cursor:pointer;
-    width:100%;
-    color:white;
-    font-weight:bold;
-}
-
-button:active{
-    transform:scale(0.97);
+    font-size:18vw;
+    margin-top:10px;
+    line-height:1;
 }
 
 .yellow{
-    background:#fbc02d;
+    background:#f4c20d;
     color:black;
 }
 
 .green{
-    background:#43a047;
+    background:#2e7d32;
 }
 
 .blue{
-    background:#1e88e5;
+    background:#1565c0;
 }
 
 .red{
-    background:#e53935;
+    background:#c62828;
 }
 
-.controls{
-    margin-top:30px;
+.bottom{
+    padding:8px;
+    background:#111;
+    display:flex;
+    gap:8px;
 }
 
-#eindeBtn{
+.bottom button{
+    flex:1;
+    border:none;
+    border-radius:14px;
+    padding:18px;
+    font-size:5vw;
+    font-weight:bold;
+    color:white;
+}
+
+#endBtn{
     background:black;
-    max-width:300px;
+    border:2px solid white;
 }
 
 #resetBtn{
     background:#666;
-    max-width:300px;
-    margin-top:15px;
 }
 
 #resultaat{
-    background:white;
-    margin:30px auto;
-    max-width:700px;
-    border-radius:15px;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.92);
+    color:white;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
     padding:20px;
-    font-size:24px;
-    box-shadow:0 2px 10px rgba(0,0,0,0.1);
+    font-size:7vw;
+    z-index:10;
+}
+
+#resultBox{
+    background:#222;
+    padding:30px;
+    border-radius:20px;
+    width:100%;
+    max-width:500px;
+}
+
+.closeBtn{
+    margin-top:20px;
+    background:white;
+    color:black;
+    border:none;
+    border-radius:12px;
+    padding:15px;
+    font-size:5vw;
+    width:100%;
 }
 </style>
 </head>
 
 <body>
 
-<h1>Dieren Levens Teller</h1>
-
 <div class="grid">
 
-    <div class="card">
-        <div class="team">Herten</div>
+    <button class="team yellow" id="btn0">
+        HERTEN
         <div class="counter" id="count0">0</div>
-        <button class="yellow" id="btn0">+1 leven</button>
-    </div>
+    </button>
 
-    <div class="card">
-        <div class="team">Vossen</div>
+    <button class="team green" id="btn1">
+        VOSSEN
         <div class="counter" id="count1">0</div>
-        <button class="green" id="btn1">+1 leven</button>
-    </div>
+    </button>
 
-    <div class="card">
-        <div class="team">Leeuwen</div>
+    <button class="team blue" id="btn2">
+        LEEUWEN
         <div class="counter" id="count2">0</div>
-        <button class="blue" id="btn2">+1 leven</button>
-    </div>
+    </button>
 
-    <div class="card">
-        <div class="team">Panters</div>
+    <button class="team red" id="btn3">
+        PANTERS
         <div class="counter" id="count3">0</div>
-        <button class="red" id="btn3">+1 leven</button>
-    </div>
+    </button>
 
 </div>
 
-<div class="controls">
-    <button id="eindeBtn">Einde spel</button>
-    <br><br>
-    <button id="resetBtn">Reset spel</button>
+<div class="bottom">
+    <button id="endBtn">Einde</button>
+    <button id="resetBtn">Reset</button>
 </div>
 
 <div id="resultaat">
-Klik op een knop om levens toe te voegen.
+    <div id="resultBox"></div>
 </div>
 
 <script>
 
-document.addEventListener("DOMContentLoaded", function(){
+document.addEventListener("gesturestart", function (e) {
+    e.preventDefault();
+});
 
-    let scores = [0,0,0,0];
+let scores = [0,0,0,0];
 
-    function update(index){
-        document.getElementById("count" + index).innerText = scores[index];
+const namen = [
+    "Herten",
+    "Vossen",
+    "Leeuwen",
+    "Panters"
+];
+
+function update(index){
+    document.getElementById("count" + index).innerText = scores[index];
+}
+
+function add(index){
+    scores[index]++;
+    update(index);
+}
+
+document.getElementById("btn0").onclick = function(){ add(0); };
+document.getElementById("btn1").onclick = function(){ add(1); };
+document.getElementById("btn2").onclick = function(){ add(2); };
+document.getElementById("btn3").onclick = function(){ add(3); };
+
+document.getElementById("resetBtn").onclick = function(){
+
+    scores = [0,0,0,0];
+
+    for(let i=0;i<4;i++){
+        update(i);
+    }
+};
+
+document.getElementById("endBtn").onclick = function(){
+
+    let lijst = [
+        {naam:namen[0], score:scores[0]},
+        {naam:namen[1], score:scores[1]},
+        {naam:namen[2], score:scores[2]},
+        {naam:namen[3], score:scores[3]}
+    ];
+
+    lijst.sort(function(a,b){
+        return b.score - a.score;
+    });
+
+    let html = "<h2>Eindscore</h2><br>";
+
+    for(let i=0;i<lijst.length;i++){
+        html += (i+1) + ". " + lijst[i].naam + " - " + lijst[i].score + "<br><br>";
     }
 
-    document.getElementById("btn0").onclick = function(){
-        scores[0]++;
-        update(0);
-    };
+    html += '<button class="closeBtn" onclick="sluitScore()">Sluiten</button>';
 
-    document.getElementById("btn1").onclick = function(){
-        scores[1]++;
-        update(1);
-    };
+    document.getElementById("resultBox").innerHTML = html;
+    document.getElementById("resultaat").style.display = "flex";
+};
 
-    document.getElementById("btn2").onclick = function(){
-        scores[2]++;
-        update(2);
-    };
-
-    document.getElementById("btn3").onclick = function(){
-        scores[3]++;
-        update(3);
-    };
-
-    document.getElementById("eindeBtn").onclick = function(){
-
-        let lijst = [
-            {naam:"Herten", score:scores[0]},
-            {naam:"Vossen", score:scores[1]},
-            {naam:"Leeuwen", score:scores[2]},
-            {naam:"Panters", score:scores[3]}
-        ];
-
-        lijst.sort(function(a,b){
-            return b.score - a.score;
-        });
-
-        let tekst = "<h2>Eindscore</h2>";
-
-        for(let i=0; i<lijst.length; i++){
-            tekst += (i+1) + ". " + lijst[i].naam + " - " + lijst[i].score + " levens<br><br>";
-        }
-
-        document.getElementById("resultaat").innerHTML = tekst;
-    };
-
-    document.getElementById("resetBtn").onclick = function(){
-
-        scores = [0,0,0,0];
-
-        for(let i=0; i<4; i++){
-            update(i);
-        }
-
-        document.getElementById("resultaat").innerHTML =
-        "Klik op een knop om levens toe te voegen.";
-    };
-
-});
+function sluitScore(){
+    document.getElementById("resultaat").style.display = "none";
+}
 
 </script>
 
